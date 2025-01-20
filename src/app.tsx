@@ -1,13 +1,31 @@
+import { NavigationContainer } from "@react-navigation/native";
 import { registerRootComponent } from "expo";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { type ParameterList } from "./param-types";
+import React from "react";
+import { RecruitmentList } from "./screens/recruitment-list";
+import { RecruitmentDetail } from "./screens/recruitment-detail";
 
+const Stack = createStackNavigator<ParameterList>();
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={RecruitmentList} />
+          <Stack.Screen
+            name="RecruitmentDetail"
+            component={RecruitmentDetail}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <View style={styles.container}>
+        <Text>Open up App.tsx to start working on your app!</Text>
+        <StatusBar style="auto" />
+      </View>
+    </>
   );
 }
 
