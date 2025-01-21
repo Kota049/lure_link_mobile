@@ -1,7 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { registerRootComponent } from "expo";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { type ParameterList } from "./param-types";
 import React from "react";
