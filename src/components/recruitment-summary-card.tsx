@@ -5,6 +5,7 @@ import { Avatar, Card, Text } from "react-native-paper";
 import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EntypoIcon from "react-native-vector-icons/Entypo";
+import ContentLoader, { Circle, Rect } from "react-content-loader/native";
 
 export const RecruitmentSummaryCard = (props: Recruitment) => {
   return (
@@ -48,6 +49,29 @@ export const RecruitmentSummaryCard = (props: Recruitment) => {
             </View>
           </View>
         </View>
+      </Card.Content>
+    </Card>
+  );
+};
+
+export const RecruitmentSummaryCardSkeleton = (props: { key: string }) => {
+  return (
+    <Card style={styles.card} {...props}>
+      <Card.Content>
+        <ContentLoader
+          speed={2}
+          width={400}
+          height={85} // todo: この値は後で調整する
+          viewBox="0 0 400 85"
+          backgroundColor="#f3f3f3"
+          foregroundColor="#ecebeb"
+        >
+          <Circle cx="24" cy="24" r="24" />
+          <Rect x="60" y="15" rx="4" ry="4" width="200" height="10" />
+          <Rect x="60" y="35" rx="4" ry="4" width="150" height="10" />
+          <Rect x="60" y="60" rx="4" ry="4" width="300" height="10" />
+          <Rect x="60" y="80" rx="4" ry="4" width="250" height="10" />
+        </ContentLoader>
       </Card.Content>
     </Card>
   );

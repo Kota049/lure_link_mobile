@@ -8,7 +8,6 @@ const options: AxiosRequestConfig = {
 export const fetchRecruitmentList = async (): Promise<Recruitment[]> => {
   const response = await axios(options).then(
     (res: AxiosResponse<Recruitment[]>) => {
-      console.log(res.data);
       return res.data;
     }
   );

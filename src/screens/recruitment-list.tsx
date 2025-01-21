@@ -1,9 +1,12 @@
 import React from "react";
 import { Text, useTheme } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
-import { FlatList, SafeAreaView, ScrollView } from "react-native";
+import { FlatList, SafeAreaView } from "react-native";
 import { fetchRecruitmentList } from "@/api";
-import { RecruitmentSummaryCard } from "@/components/recruitment-summary-card";
+import {
+  RecruitmentSummaryCard,
+  RecruitmentSummaryCardSkeleton,
+} from "@/components/recruitment-summary-card";
 
 // 一覧ページのコンポーネント
 export const RecruitmentList = () => {
@@ -17,9 +20,12 @@ export const RecruitmentList = () => {
     // ローディング中はスケルトン表示
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView>
-          {/* {data.map((recruitment) => RecruitmentSummaryCard(recruitment))} */}
-        </ScrollView>
+        <FlatList
+          data={[...Array(5).keys()]}
+          renderItem={(item) => (
+            <RecruitmentSummaryCardSkeleton key={item.index.toString()} />
+          )}
+        />
       </SafeAreaView>
     );
   }
