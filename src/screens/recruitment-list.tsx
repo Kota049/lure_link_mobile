@@ -1,76 +1,50 @@
 import React from "react";
-import {
-  Text,
-  ActivityIndicator,
-  useTheme,
-  Card,
-  Avatar,
-} from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
-import { View, StyleSheet } from "react-native";
-
-// TODO:別ファイルに切り出す
-const fetchData = (): Promise<string> =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve("データが正常に読み込まれました！"), 10000); // 3秒後に解決
-  });
+import { FlatList, SafeAreaView, ScrollView } from "react-native";
+import { fetchRecruitmentList } from "@/api";
+import { RecruitmentSummaryCard } from "@/components/recruitment-summary-card";
 
 // 一覧ページのコンポーネント
 export const RecruitmentList = () => {
   const theme = useTheme();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["data"],
-    queryFn: fetchData,
+    queryFn: fetchRecruitmentList,
   });
 
   if (isLoading) {
     // ローディング中はスケルトン表示
     return (
-      <View
-        style={[
-          styles.skeletonContainer,
-          { backgroundColor: theme.colors.background },
-        ]}
-      >
-        <ActivityIndicator
-          animating={true}
-          size="large"
-          color={theme.colors.primary}
-        />
-      </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView>
+          {/* {data.map((recruitment) => RecruitmentSummaryCard(recruitment))} */}
+        </ScrollView>
+      </SafeAreaView>
     );
   }
+  if (isError || !data) {
+    console.log(error);
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Text style={{ textAlign: "center", marginTop: 20 }}>
+          データがありません。
+        </Text>
+      </SafeAreaView>
+    );
+  }
+  console.log(data);
 
   // データ読み込み後の表示
   return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <View style={styles.wstack}>
-          <Avatar.Text size={36} label="A" />
-          <View style={styles.vstack}>
-            <Text variant="titleLarge">{data}</Text>
-            <Text variant="titleLarge">{data}</Text>
-          </View>
-        </View>
-      </Card.Content>
-    </Card>
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => (
+          <RecruitmentSummaryCard {...item} key={item.recruitmentId} />
+        )}
+        keyExtractor={(item) => item.recruitmentId.toString()}
+      />
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  skeletonContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    margin: 16,
-  },
-  wstack: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-  },
-  vstack: { display: "flex", flexDirection: "column" },
-});
